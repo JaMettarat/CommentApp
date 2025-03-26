@@ -19,18 +19,30 @@ namespace CommentApp.Controllers
 
         public async Task<IActionResult> Index()
         {
-            PostDto postDto = new PostDto();            
             var posts = await _context.Posts
                 .Include(p => p.User)
-                .Include(p => p.Comments.OrderByDescending(i => i.Timestamp))
+                .Include(p => p.Comments.OrderByDescending(c => c.Timestamp))
                 .ThenInclude(c => c.User)
                 .ToListAsync();
 
-            if (posts != null)
+            if (posts == null)
             {
-                postDto.Post = posts;
-                postDto.UserLogin = new User { Id = Guid.Parse("2f69d9bb-5e65-46ce-a292-420e9a137e6a"), Username = "Blend 285", Email = "jane@example.com", PasswordHash = "hashed_password2" };
-            }            
+                return View(new PostDto()); // Return an empty PostDto if no posts are available
+            }
+
+            var userLogin = new User
+            {
+                Id = Guid.Parse("2f69d9bb-5e65-46ce-a292-420e9a137e6a"),
+                Username = "Blend 285",
+                Email = "jane@example.com",
+                PasswordHash = "hashed_password2"
+            };
+
+            var postDto = new PostDto
+            {
+                Post = posts,
+                UserLogin = userLogin
+            };
 
             return View(postDto);
         }
