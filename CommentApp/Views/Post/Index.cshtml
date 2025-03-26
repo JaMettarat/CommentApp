@@ -1,0 +1,80 @@
+﻿@using CommentApp.ViewModels
+@model PostDto
+
+@foreach (var post in Model.Post)
+{
+    <div class="chat-box" id="post-@post.Id">
+        <div class="message">
+            <div class="avatar">@post.User.Username.ToUpper()[0]</div>
+            <div class="message-content">
+                <strong>@post.User.Username</strong>
+                <span class="timestamp">@post.Timestamp.ToLocalTime().ToString("dd MMM yyyy HH:mm")</span>
+                <img src="@post.ImgageUrl" alt="Dog and Cat">
+            </div>
+        </div>
+        <div class="message">
+            <div class="avatar blue">@Model.UserLogin.Username.ToUpper()[0]</div>
+            <div class="message-content">
+                <strong>@Model.UserLogin.Username</strong>
+                <form asp-action="AddComment" asp-controller="Post" method="post" id="comment-form">
+                    <input type="hidden" name="PostId" value="@post.Id" />
+                    <input type="hidden" name="UserId" value="@Model.UserLogin.Id" />
+                    <input type="hidden" name="Username" value="@Model.UserLogin.Username" />
+                    <input type="text" name="Comment" class="comment-box" placeholder="Comment" id="comment-box" />
+                </form>                                
+            </div>
+        </div>
+        <div class="user-comments">
+            @foreach (var comment in post.Comments)
+            {
+                <div class="message">
+                    <div class="avatar blue">@comment.User.Username.ToUpper()[0]</div>
+                    <div class="message-content">
+                        <strong>@comment.User.Username</strong>
+                        <p>@comment.Text</p>
+                    </div>
+                </div>
+            }
+        </div>                
+    </div>
+}
+
+<script src="https://cdn.jsdelivr.net/npm/@("@microsoft")/signalr@7.0.5/dist/browser/signalr.min.js"></script>
+<script>
+    const connection = new signalR.HubConnectionBuilder()
+        .withUrl("/commentHub")
+        .build();
+
+    connection.on("ReceiveComment", (postId, username, text) => {        
+        const postElement = document.querySelector(`#post-${postId}`);
+        if (postElement) {
+            const commentList = postElement.querySelector(".user-comments");             
+
+            // Build the inner HTML for the new comment
+            const newCommentHTML = `
+                <div class="message">
+                    <div class="avatar blue">${username[0]}</div>
+                    <div class="message-content">
+                        <strong>${username}</strong>
+                        <p>${text}</p>
+                    </div>
+                </div>
+            `;            
+            commentList.innerHTML = newCommentHTML + commentList.innerHTML;
+        }
+    });
+
+    connection.start().catch(err => console.error(err));
+
+    document.getElementById("comment-form").addEventListener("keypress", function (event) {        
+        if (event.key === "Enter") {
+            let commentValue = document.getElementById("comment-box").value.trim();
+            if(commentValue)
+            {
+                event.preventDefault();
+                console.log(commentValue);
+                this.submit();
+            }            
+        }
+    });
+</script>

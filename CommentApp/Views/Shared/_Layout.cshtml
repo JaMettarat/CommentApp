@@ -1,0 +1,127 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - CommentApp</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/CommentApp.styles.css" asp-append-version="true" />
+    <style rel="stylesheet">
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            width: 50%;
+            margin: auto;            
+            background-color: white;
+        }
+
+        .header {
+            background-color: #2da44e;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .chat-box {
+            padding: 20px;
+        }
+
+        .message {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: gray;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+            .avatar.blue {
+                background-color: #3b82f6;
+            }
+
+        .message-content {
+            background: white;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .timestamp {
+            font-size: 12px;
+            color: gray;
+            display: block;
+        }
+
+        .comment-box {
+            background: lightgray;
+            padding: 5px;
+            border-radius: 5px;
+            color: gray;
+            margin-top: 5px;
+            border: none;
+            width: 400px;
+        }
+
+        img {
+            width: 100%;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        @* <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container-fluid">
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">CommentApp</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav> *@
+    </header>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2025 - CommentApp - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>    
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
